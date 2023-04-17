@@ -8,8 +8,8 @@ const sendEmail = async (fixEmail, sendEmail, subject) => {
     port: 587,
     secure: false,
     auth: {
-      user: "apikey",
-      pass: "SG.TzcaDcCGQnWQo6ObvnVGrg.EGCVVw3GidwRyfpGlSyQO66ma8FOvUQCgKSaYFeQSNo",
+      user: "USER_HERE",
+      pass: "PASS_HERE",
     },
   });
 
@@ -27,4 +27,4 @@ const sendEmail = async (fixEmail, sendEmail, subject) => {
   );
 };
 
-sendEmail("drayner@br.ibm.com", "rafaeloliveira@ibm.com", "assunto");
+sendEmail("SENDER-EMAIL", "RECEIVER-EMAIL", "assunto");
