@@ -40,4 +40,5 @@ const sendEmail = async (fixEmail, sendEmail) => {
   );
 };
 
+//Send email function
 sendEmail(process.env.FROM_EMAIL, receiverEmail);
