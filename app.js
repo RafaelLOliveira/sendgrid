@@ -1,10 +1,11 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
+const emailProvider = require("./config/emailProvider.js");
 
 //Code Engine Environment Variable -> CE_DATA
 let transactionData = JSON.parse(process.env.CE_DATA);
 
-//Accessing JSON sent by HTTP body
+//Accessing CE_DATA
 let amount = transactionData.amountTransaction;
 let senderName = transactionData.userSourceTransaction.firstNameUser;
 let receiverName = transactionData.userDestinyTransaction.firstNameUser;
@@ -16,21 +17,11 @@ const emailContent = `<h2>Olá ${receiverName}, </h2>
 <h4> At, <br /> Equipe Rigel. </h4>`;
 
 const sendEmail = async (fixEmail, sendEmail) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SENDGRID_HOST,
-    port: process.env.SENDGRID_PORT,
-    secure: false,
-    auth: {
-      user: process.env.SENDGRID_USER,
-      pass: process.env.SENDGRID_PASS,
-    },
-  });
-
-  transporter.sendMail(
+  emailProvider.sendMail(
     {
       from: fixEmail,
       to: sendEmail,
-      subject: "New bank transfer received",
+      subject: "Tranferência recebida",
       html: emailContent,
     },
     function (err, info) {
