@@ -1,15 +1,28 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
-//const sgMail = require("@sendgrid/mail");
+const nodemailer = require("nodemailer");
 
-const sendEmail = async (fixEmail, sendEmail, subject) => {
+//Code Engine Environment Variable -> CE_DATA
+let transactionData = JSON.parse(process.env.CE_DATA);
+
+//Accessing JSON sent by HTTP body
+let amount = transactionData.amountTransaction;
+let senderName = transactionData.userSourceTransaction.firstNameUser;
+let receiverName = transactionData.userDestinyTransaction.firstNameUser;
+let receiverEmail = transactionData.userDestinyTransaction.emailUser;
+
+//Email message
+const emailContent = `<h2>Olá ${receiverName}, </h2>
+<h3>Você recebeu uma transação de ${senderName} no valor de ${amount} reais.</h3>
+<h4> At, <br /> Equipe Rigel. </h4>`;
+
+const sendEmail = async (fixEmail, sendEmail) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.sendgrid.net",
-    port: 587,
+    host: process.env.SENDGRID_HOST,
+    port: process.env.SENDGRID_PORT,
     secure: false,
     auth: {
-      user: "apikey",
-      pass: "SG.TzcaDcCGQnWQo6ObvnVGrg.EGCVVw3GidwRyfpGlSyQO66ma8FOvUQCgKSaYFeQSNo",
+      user: process.env.SENDGRID_USER,
+      pass: process.env.SENDGRID_PASS,
     },
   });
 
@@ -17,8 +30,8 @@ const sendEmail = async (fixEmail, sendEmail, subject) => {
     {
       from: fixEmail,
       to: sendEmail,
-      subject: subject,
-      html: "<h1>testando email</h1>",
+      subject: "New bank transfer received",
+      html: emailContent,
     },
     function (err, info) {
       if (err) console.log(err);
@@ -27,4 +40,4 @@ const sendEmail = async (fixEmail, sendEmail, subject) => {
   );
 };
 
-sendEmail("drayner@br.ibm.com", "rafaeloliveira@ibm.com", "assunto");
+sendEmail(process.env.FROM_EMAIL, receiverEmail);
