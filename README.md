@@ -1,6 +1,6 @@
-# Sendgrid running in Code Engine
+# Sendgrid running in IBM Cloud Code Engine
 
-This projest shows two ways to send emails using Sendgrid running in Code Engine.
+This Node JS project shows two ways to send emails with by Sendgrid running in Code Engine.
 
 ### Required services:
 - Sendgrid Account.
